@@ -1,15 +1,21 @@
-# kafka-Consumer
+package com.example.kafka.kafkacontroller.consumer;
 
-Dependency:
-```java
-<dependency>
-    <groupId>org.springframework.kafka</groupId>
-    <artifactId>spring-kafka</artifactId>
-</dependency>
-```
+import com.example.kafka.kafkacontroller.model.Employee;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-Consumer properties:
-```java
+import java.util.HashMap;
+import java.util.Map;
+
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
@@ -32,21 +38,3 @@ public class KafkaConsumerConfig {
         return factory;
     }
 }
-```
-
-Listener:
-```java
-@Component
-public class Consumer {
-    Gson g = new Gson();
-    @KafkaListener(topics = "test", groupId = "0")
-    public void consumer(String e){
-        System.out.println("employee e = "+ e);
-        Employee emp= g.fromJson(e, Employee.class);
-        System.out.println(" employee object received: "+emp.getEid()+ ", "+emp.getEname()+", "+emp.getDept());
-    }
-}
-```
-
-Once we send a message to topic:
-![img.png](img.png)
